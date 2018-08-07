@@ -1,33 +1,25 @@
 #include "Board_LED.h"
 #include <stdint.h>
 
+uint32_t value = 0;
+
 void delay(void)
 {
 	for(uint32_t i=0; i<500000; i++);
 }
 
-void fun3(void)
+void read_ram(void)
 {
-	void (*jump_addr) (void) = 0x00000000;
-	jump_addr();
-}
-
-void fun2(void)
-{
-	fun3();
-}
-
-void fun1(void)
-{
-	fun2();
+	uint32_t *addr = (uint32_t*)0x20000000;
+	value = *addr;
 }
 
 int main(void)
 {
+	read_ram();
+	LED_Initialize();
 	while(1)
 	{
-		fun1();
-		LED_Initialize();
 		LED_On(0);
 		LED_On(1);
 		LED_On(2);
